@@ -1,0 +1,70 @@
+site_name: SmartPredictor 文档
+site_description: SmartPredictor 图像识别系统使用文档
+site_author: RonssonAi
+
+theme:
+  name: material
+  language: zh
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - search.highlight
+    - search.share
+    - search.suggest
+    - content.code.copy
+    - content.code.annotate
+
+markdown_extensions:
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed
+  - pymdownx.emoji
+  - pymdownx.arithmatex
+  - pymdownx.mark
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.tasklist
+  - admonition
+  - footnotes
+  - meta
+  - toc:
+      permalink: true
+  - pymdownx.smartsymbols
+  - attr_list
+  - md_in_html
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.mermaid
+
+plugins:
+  - search
+  - minify:
+      minify_html: true
+  - git-revision-date-localized:
+      type: datetime
+
+nav:
+  - 首页: index.md
+  - 入门指南:
+    - 快速开始: getting-started/quickstart.md
+    - 安装说明: getting-started/installation.md
+  - API文档:
+    - 接口概述: api/overview.md
+    - 模型加载: api/load.md
+    - 图像注册: api/regist.md
+    - 图像预测: api/predict.md
+    - 模型保存: api/save.md
+  - 示例代码:
+    - 基础示例: examples/basic.md
+    - 高级用法: examples/advanced.md
+  - 常见问题: faq.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/RonssonAi/fresh_recognition
+    - icon: fontawesome/brands/gitlab
+      link: https://gitlab.com/yourusername/smartpredictor 

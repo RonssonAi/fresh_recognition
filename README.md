@@ -1,64 +1,86 @@
-# Fresh Recognition
+# SmartPredictor 图像识别系统
 
-基于深度学习的图像识别系统，支持图像注册和预测功能。
-
-## 快速导航
-
-- [项目文档](docs/index.md)
-- [API文档](docs/api/overview.md)
-- [使用示例](docs/examples/basic.md)
-- [常见问题](docs/faq.md)
-
-## 主要特性
-
-- 🚀 简单易用的 API 接口
-- 📸 支持图像注册和预测
-- 🎯 高精度的识别结果
-- 🔄 支持模型在线更新
-- 📊 可配置的相似度阈值
-- 💾 模型持久化存储
+SmartPredictor 是一个简单易用的图像识别系统，支持图像注册和预测功能。
 
 ## 快速开始
 
-```cpp
-// 1. 加载模型
-std::string model_dir = "path/to/model";
-int result = SmartPredictor_load(model_dir);
+### 安装
 
-// 2. 注册图像
-std::string label = "apple";
-result = SmartPredictor_regist_img(img_bytes, img_size, label);
-
-// 3. 预测图像
-std::string prediction = SmartPredictor_predict_img_filter(img_bytes, img_size, 0.6);
+```bash
+pip install smartpredictor
 ```
 
-## 系统要求
+### 基本使用
 
-- C++11 或更高版本
-- OpenCV 4.x
-- CMake 3.10 或更高版本
+```python
+from smartpredictor import SmartPredictor
 
-## 安装说明
+# 初始化预测器
+predictor = SmartPredictor()
 
-详细的安装说明请参考[安装文档](docs/getting-started/installation.md)。
+# 注册图像
+predictor.register("image1.jpg", "类别1")
+predictor.register("image2.jpg", "类别2")
 
-## 文档
+# 预测图像
+result = predictor.predict("test.jpg")
+print(f"预测结果: {result}")
+```
 
-完整的文档请访问 [docs](docs/) 目录：
+## 主要功能
 
-- [快速开始](docs/getting-started/quickstart.md)
-- [API文档](docs/api/overview.md)
-- [示例代码](docs/examples/basic.md)
-- [常见问题](docs/faq.md)
+- 图像注册：支持批量注册图像
+- 图像预测：快速识别图像类别
+- 模型保存：支持保存和加载模型
 
-## 支持与反馈
+## API 说明
 
-如果您在使用过程中遇到任何问题，或有任何建议，请通过以下方式联系我们：
+### 初始化
+```python
+predictor = SmartPredictor(model_path="path/to/model")
+```
 
-- 提交 Issue
-- 联系技术支持团队
+### 注册图像
+```python
+predictor.register(image_path, label)
+```
 
-## 许可证
+### 预测图像
+```python
+result = predictor.predict(image_path)
+```
 
-本项目采用 [MIT 许可证](LICENSE)。 
+### 保存模型
+```python
+predictor.save("model.pkl")
+```
+
+## 示例代码
+
+### 基础示例
+```python
+from smartpredictor import SmartPredictor
+
+# 创建预测器实例
+predictor = SmartPredictor()
+
+# 注册训练图像
+predictor.register("train/apple1.jpg", "apple")
+predictor.register("train/banana1.jpg", "banana")
+
+# 预测新图像
+result = predictor.predict("test/fruit.jpg")
+print(f"预测结果: {result}")
+```
+
+## 常见问题
+
+1. Q: 支持哪些图像格式？
+   A: 支持 JPG、PNG、BMP 等常见图像格式。
+
+2. Q: 如何提高识别准确率？
+   A: 建议使用清晰的图像，并确保训练图像具有代表性。
+
+## 联系方式
+
+- GitHub: [RonssonAi/fresh_recognition](https://github.com/RonssonAi/fresh_recognition) 

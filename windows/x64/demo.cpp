@@ -25,7 +25,7 @@ float PREDICTION_THRESHOLD = 0.3f;
 // DLL function pointers
 HINSTANCE dll_handle = nullptr;
 using SmartPredictor_load = int(CALLBACK*)(const std::string&, int);
-using SmartPredictor_release = int(CALLBACK*)();
+using SmartPredictor_unload = int(CALLBACK*)();
 using SmartPredictor_predict_img = std::string(CALLBACK*)(unsigned char*, long, float);
 using SmartPredictor_regist_img = int(CALLBACK*)(unsigned char*, long byte_size, std::string label, int pos);
 using SmartPredictor_save = int(CALLBACK*)(const std::string);
@@ -35,7 +35,7 @@ using SmartPredictor_sign = int(CALLBACK*)(const std::string, const std::string)
 
 // Function pointers
 SmartPredictor_load load_func = nullptr;
-SmartPredictor_release release_func = nullptr;
+SmartPredictor_unload unload = nullptr;
 SmartPredictor_predict_img predict_func = nullptr;
 SmartPredictor_regist_img regist_func = nullptr;
 SmartPredictor_save save_func = nullptr;
@@ -178,7 +178,7 @@ int main() {
             case 'u': {
                 // Unload Model
                 std::cout << "Unloading model..." << std::endl;
-                if (release_func() == 1) {
+                if (unload() == 0) {
                     std::cout << "Model unloaded successfully" << std::endl;
                 } else {
                     std::cout << "Failed to unload model" << std::endl;
@@ -213,7 +213,7 @@ void displayMenu() {
     std::cout << "Press 'r': Register Image (demo.jpg)" << std::endl;
     std::cout << "Press 's': Save Model" << std::endl;
     std::cout << "Press 'c': Clear Model" << std::endl;
-    std::cout << "Press 'd': Delete all pictures of label in model" << std::endl;
+    std::cout << "Press 'd': Delete label from model" << std::endl;
     std::cout << "Press 'u': Unload Model" << std::endl;
     std::cout << "Press 'q': Quit" << std::endl;
     std::cout << "===========================" << std::endl;
@@ -227,7 +227,7 @@ bool loadDLL() {
 
 bool getFunctionPointers() {
     load_func = (SmartPredictor_load)GetProcAddress(dll_handle, "SmartPredictor_load");
-    release_func = (SmartPredictor_release)GetProcAddress(dll_handle, "SmartPredictor_release");
+    unload = (SmartPredictor_unload)GetProcAddress(dll_handle, "SmartPredictor_unload");
     predict_func = (SmartPredictor_predict_img)GetProcAddress(dll_handle, "SmartPredictor_predict_img_filter");
     regist_func = (SmartPredictor_regist_img)GetProcAddress(dll_handle, "SmartPredictor_regist_img");
     save_func = (SmartPredictor_save)GetProcAddress(dll_handle, "SmartPredictor_save");
@@ -235,7 +235,7 @@ bool getFunctionPointers() {
     delete_func = (SmartPredictor_delete)GetProcAddress(dll_handle, "SmartPredictor_delete");
     sign_func = (SmartPredictor_sign)GetProcAddress(dll_handle, "SmartPredictor_sign");
 
-    return load_func && release_func && predict_func && regist_func && 
+    return load_func && unload && predict_func && regist_func && 
            save_func && reset_func && sign_func && delete_func;
 }
 

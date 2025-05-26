@@ -43,8 +43,8 @@ Registers a new image and its label to the model. This function is used to add n
 
 ## Returns
 
-- `0`: Registration successful
-- Other values: Registration failed
+- `>= 0`: Registration successful (returns the number of inserted features)
+- `< 0`: Registration failed
 
 
 ## Example
@@ -61,7 +61,7 @@ int result = SmartPredictor_regist_img(
     6
 );
 
-if (result != 0) {
+if (result < 0) {
     std::cerr << "Registration failed with code: " << result << std::endl;
     return;
 }

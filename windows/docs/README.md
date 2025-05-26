@@ -110,8 +110,8 @@ float PREDICTION_THRESHOLD = 0.3f;
 // DLL function pointers
 HINSTANCE dll_handle = nullptr;
 using SmartPredictor_load = int(CALLBACK*)(const std::string&, int);
-using SmartPredictor_release = int(CALLBACK*)();
-using SmartPredictor_predict_img = std::string(CALLBACK*)(unsigned char*, long, float);
+using SmartPredictor_unload = int(CALLBACK*)();
+using SmartPredictor_predict_img_filter = std::string(CALLBACK*)(unsigned char*, long, float);
 using SmartPredictor_regist_img = int(CALLBACK*)(unsigned char*, long byte_size, std::string label, int pos);
 using SmartPredictor_save = int(CALLBACK*)(const std::string);
 using SmartPredictor_reset = bool(CALLBACK*)(const std::string);
@@ -120,8 +120,8 @@ using SmartPredictor_sign = int(CALLBACK*)(const std::string, const std::string)
 
 // Function pointers
 SmartPredictor_load load_func = nullptr;
-SmartPredictor_release release_func = nullptr;
-SmartPredictor_predict_img predict_func = nullptr;
+SmartPredictor_unload unload_func = nullptr;
+SmartPredictor_predict_img_filter predict_func = nullptr;
 SmartPredictor_regist_img regist_func = nullptr;
 SmartPredictor_save save_func = nullptr;
 SmartPredictor_reset reset_func = nullptr;
@@ -131,8 +131,8 @@ SmartPredictor_sign sign_func = nullptr;
 dll_handle = LoadLibraryW(DLL_NAME);
 
 load_func = (SmartPredictor_load)GetProcAddress(dll_handle, "SmartPredictor_load");
-release_func = (SmartPredictor_release)GetProcAddress(dll_handle, "SmartPredictor_release");
-predict_func = (SmartPredictor_predict_img)GetProcAddress(dll_handle, "SmartPredictor_predict_img_filter");
+unload_func = (SmartPredictor_unload)GetProcAddress(dll_handle, "SmartPredictor_unload");
+predict_func = (SmartPredictor_predict_img_filter)GetProcAddress(dll_handle, "SmartPredictor_predict_img_filter");
 regist_func = (SmartPredictor_regist_img)GetProcAddress(dll_handle, "SmartPredictor_regist_img");
 save_func = (SmartPredictor_save)GetProcAddress(dll_handle, "SmartPredictor_save");
 reset_func = (SmartPredictor_reset)GetProcAddress(dll_handle, "SmartPredictor_reset");
@@ -185,7 +185,7 @@ int result = SmartPredictor_regist_img(
 4. Clean up:
 ```cpp
 // Release resources
-SmartPredictor_release();
+SmartPredictor_unload();
 ```
 
 ## Common Tasks

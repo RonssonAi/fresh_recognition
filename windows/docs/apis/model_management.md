@@ -5,7 +5,7 @@
 - [Save Model](#save-model)
 - [Reset Model](#reset-model)
 - [Delete Label](#delete-label)
-- [Release Model](#release-model)
+- [Unload Model](#unload-model)
 - [Examples](#examples)
 - [Related Documentation](#related-documentation)
 
@@ -29,8 +29,8 @@ int SmartPredictor_save(const std::string model_dir);
   - Example: `"./model"`
 
 ### Returns
-- `1`: Save successful
-- Other values: Save failed
+- `>= 0`: Save successful
+- `< 0`: Save failed
 
 ## Reset Model
 
@@ -72,11 +72,11 @@ Deletes all image data associated with the specified label from the model.
 - `true`: Deletion successful
 - `false`: Deletion failed
 
-## Release Model
+## Unload Model
 
 ### Function
 ```cpp
-int SmartPredictor_release();
+int SmartPredictor_unload();
 ```
 
 ### Purpose
@@ -86,15 +86,15 @@ Releases resources of the loaded model.
 None
 
 ### Returns
-- `0`: Release successful
-- Other values: Release failed
+- `0`: Unload successful
+- Other values: Unload failed
 
 ## Examples
 
 ### Save Model
 ```cpp
 // Save model after modifications
-if (SmartPredictor_save("./model") != 1) {
+if (SmartPredictor_save("./model") < 0) {
     std::cerr << "Failed to save model" << std::endl;
     return;
 }
@@ -103,7 +103,7 @@ if (SmartPredictor_save("./model") != 1) {
 ### Reset Model
 ```cpp
 // Reset model (irreversible)
-if (!SmartPredictor_reset("your_auth_code")) {
+if (!SmartPredictor_reset("./model")) {
     std::cerr << "Failed to reset model" << std::endl;
     return;
 }
@@ -118,10 +118,10 @@ if (!SmartPredictor_delete("apple")) {
 }
 ```
 
-### Release Model
+### Unload Model
 ```cpp
 // Release model resources
-if (SmartPredictor_release() != 0) {
+if (SmartPredictor_unload() != 0) {
     std::cerr << "Failed to release model" << std::endl;
     return;
 }

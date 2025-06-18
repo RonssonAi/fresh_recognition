@@ -129,19 +129,19 @@ float PREDICTION_THRESHOLD = 0.3f;
 
 // DLL function pointers
 HINSTANCE dll_handle = nullptr;
-using SmartPredictor_load = int(CALLBACK*)(const std::string&, int);
+using SmartPredictor_load = int(CALLBACK*)(const char*, int);
 using SmartPredictor_unload = int(CALLBACK*)();
-using SmartPredictor_predict_img_filter = std::string(CALLBACK*)(unsigned char*, long, float);
-using SmartPredictor_regist_img = int(CALLBACK*)(unsigned char*, long byte_size, std::string label, int pos);
-using SmartPredictor_save = int(CALLBACK*)(const std::string);
-using SmartPredictor_reset = bool(CALLBACK*)(const std::string);
-using SmartPredictor_delete = bool(CALLBACK*)(const std::string);
-using SmartPredictor_sign = int(CALLBACK*)(const std::string, const std::string);
+using SmartPredictor_predict_img = int (CALLBACK*)(unsigned char*, long, float, char*, long);
+using SmartPredictor_regist_img = int(CALLBACK*)(unsigned char*, long byte_size, const char* label, int pos);
+using SmartPredictor_save = int(CALLBACK*)(const char*);
+using SmartPredictor_reset = bool(CALLBACK*)(const char*);
+using SmartPredictor_delete = bool(CALLBACK*)(const char*);
+using SmartPredictor_sign = int(CALLBACK*)(const char*, const char*);
 
 // Function pointers
 SmartPredictor_load load_func = nullptr;
 SmartPredictor_unload unload_func = nullptr;
-SmartPredictor_predict_img_filter predict_func = nullptr;
+SmartPredictor_predict_img predict_func = nullptr;
 SmartPredictor_regist_img regist_func = nullptr;
 SmartPredictor_save save_func = nullptr;
 SmartPredictor_reset reset_func = nullptr;
@@ -152,7 +152,7 @@ dll_handle = LoadLibraryW(DLL_NAME);
 
 load_func = (SmartPredictor_load)GetProcAddress(dll_handle, "SmartPredictor_load");
 unload_func = (SmartPredictor_unload)GetProcAddress(dll_handle, "SmartPredictor_unload");
-predict_func = (SmartPredictor_predict_img_filter)GetProcAddress(dll_handle, "SmartPredictor_predict_img_filter");
+predict_func = (SmartPredictor_predict_img)GetProcAddress(dll_handle, "SmartPredictor_predict_img_filter");
 regist_func = (SmartPredictor_regist_img)GetProcAddress(dll_handle, "SmartPredictor_regist_img");
 save_func = (SmartPredictor_save)GetProcAddress(dll_handle, "SmartPredictor_save");
 reset_func = (SmartPredictor_reset)GetProcAddress(dll_handle, "SmartPredictor_reset");
@@ -163,10 +163,12 @@ sign_func = (SmartPredictor_sign)GetProcAddress(dll_handle, "SmartPredictor_sign
 2. Load model | 加载模型:
 ```cpp
 // Load the model
-int modelHandle = SmartPredictor_load("./model", 4);
-if (modelHandle < 0) {
+int result = SmartPredictor_load("./model", 4);
+if (result < 0) {
     std::cerr << "Failed to load model" << std::endl;
     return;
+} else {
+    std::cout << "Model loaded successfully" << std::endl;
 }
 ```
 
@@ -175,15 +177,23 @@ if (modelHandle < 0) {
 // Read an image
 std::vector<unsigned char> imageData = readImage("demo.jpg");
 
+// Prepare buffer for results
+char buffer[1024];
+
 // Predict
-std::string result = SmartPredictor_predict_img_filter(
+int result = SmartPredictor_predict_img_filter(
     imageData.data(),
-    imageData.size(),
-    0.3f
+    static_cast<long>(imageData.size()),
+    0.3f,
+    buffer,
+    sizeof(buffer)
 );
 
-// Display results
-std::cout << "Prediction results: " << result << std::endl;
+if (result >= 0) {
+    std::cout << "Prediction results: " << buffer << std::endl;
+} else {
+    std::cerr << "Prediction failed" << std::endl;
+}
 ```
 
 4. Registering New Images | 注册新图像
@@ -193,10 +203,16 @@ std::vector<unsigned char> imageData = readImage("demo.jpg");
 // Register a new image
 int result = SmartPredictor_regist_img(
     imageData.data(),
-    imageData.size(),
+    static_cast<long>(imageData.size()),
     "apple",
     6
 );
+
+if (result >= 0) {
+    std::cout << "Registration successful" << std::endl;
+} else {
+    std::cerr << "Registration failed" << std::endl;
+}
 ```
 
 5. Clean up | 清理:
@@ -237,22 +253,3 @@ if (SmartPredictor_reset("./model")) {
 For technical support or questions | 如需技术支持或有任何问题：
 - Email: chenbuqiao@rongxwy.com
 - wechat: chenbuqiao 
-```
-
-### Reset the Model | 重置模型
-```cpp
-// Reset the model (irreversible)
-if (SmartPredictor_reset("./model")) {
-    std::cout << "Model reset successfully" << std::endl;
-}
-```
-
-## Support | 支持
-
-For technical support or questions:
-- Email: chenbuqiao@rongxwy.com
-- wechat: chenbuqiao 
-
-如需技术支持或有任何问题：
-- 邮箱：chenbuqiao@rongxwy.com
-- 微信：chenbuqiao 

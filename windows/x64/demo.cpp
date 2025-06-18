@@ -24,14 +24,14 @@ float PREDICTION_THRESHOLD = 0.3f;
 
 // DLL function pointers
 HINSTANCE dll_handle = nullptr;
-using SmartPredictor_load = int(CALLBACK*)(const std::string&, int);
+using SmartPredictor_load = int(CALLBACK*)(const char*, int);
 using SmartPredictor_unload = int(CALLBACK*)();
-using SmartPredictor_predict_img = std::string(CALLBACK*)(unsigned char*, long, float);
-using SmartPredictor_regist_img = int(CALLBACK*)(unsigned char*, long byte_size, std::string label, int pos);
-using SmartPredictor_save = int(CALLBACK*)(const std::string);
-using SmartPredictor_reset = bool(CALLBACK*)(const std::string);
-using SmartPredictor_delete = bool(CALLBACK*)(const std::string);
-using SmartPredictor_sign = int(CALLBACK*)(const std::string, const std::string);
+using SmartPredictor_predict_img = int (CALLBACK*)(unsigned char*, long, float, char*, long);
+using SmartPredictor_regist_img = int(CALLBACK*)(unsigned char*, long byte_size, const char* label, int pos);
+using SmartPredictor_save = int(CALLBACK*)(const char*);
+using SmartPredictor_reset = bool(CALLBACK*)(const char*);
+using SmartPredictor_delete = bool(CALLBACK*)(const char*);
+using SmartPredictor_sign = int(CALLBACK*)(const char*, const char*);
 
 // Function pointers
 SmartPredictor_load load_func = nullptr;
@@ -108,10 +108,14 @@ int main() {
                 std::cout << "Processing image for prediction..." << std::endl;
                 try {
                     std::vector<unsigned char> imageData = readImage(TEST_IMAGE_PATH);
-                    std::string predictResult = predict_func(imageData.data(), 
-                                                             static_cast<unsigned int>(imageData.size()), 
-                                                             PREDICTION_THRESHOLD);
+                    char buffer[1024];
+                    int predictResult = predict_func(imageData.data(),
+                        static_cast<unsigned int>(imageData.size()), 
+                        PREDICTION_THRESHOLD,
+                        buffer,
+                        sizeof(buffer));
                     std::cout << "Prediction result: " << predictResult << std::endl;
+                    std::cout << "Prediction content: " << buffer << std::endl;
                 } catch (const std::exception& e) {
                     std::cout << "Failed to predict image: " << e.what() << std::endl;
                 }

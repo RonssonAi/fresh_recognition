@@ -13,7 +13,7 @@
 ## Function | 函数
 
 ```cpp
-int SmartPredictor_load(const std::string& model_dir, int model_type);
+int SmartPredictor_load(const char* model_directory, int model_type);
 ```
 
 ## Purpose | 用途
@@ -23,28 +23,29 @@ Loads the AI model from the specified path. This function must be called after s
 
 ## Parameters | 参数
 
-- `model_dir`: Model file path
-  - `model_dir`: 模型文件路径
-  - Type: `std::string`
-  - 类型: `std::string`
+- `model_directory`: Model file path
+
+  - `model_directory`: 模型文件路径
+  - Type: `const char*`
+  - 类型: `const char*`
   - Description: Path to the model directory
   - 描述: 模型目录的路径
   - Example: `"./model"`
   - 示例: `"./model"`
-
 - `model_type`: Model type
+
   - `model_type`: 模型类型
   - Type: `int`
   - 类型: `int`
   - Description: Type identifier for the model
   - 描述: 模型的类型标识符
   - Value: `4` (for fresh food classification)
-  - 值: `4`（用于生鲜食品分类）
+  - 值: `4`（用于生鲜分类）
 
 ## Returns | 返回值
 
-- `>= 0`: Load successful (returns model handle)
-- `>= 0`: 加载成功（返回模型句柄）
+- `>= 0`: Load successful (returns success code)
+- `>= 0`: 加载成功（返回成功代码）
 - `< 0`: Load failed
 - `< 0`: 加载失败
 
@@ -53,12 +54,23 @@ Loads the AI model from the specified path. This function must be called after s
 ```cpp
 // Load the model
 // 加载模型
-int modelHandle = SmartPredictor_load("./model", 4);
-if (modelHandle < 0) {
-    std::cerr << "Failed to load model with error code: " << modelHandle << std::endl;
+int result = SmartPredictor_load("./model", 4);
+if (result < 0) {
+    std::cerr << "Failed to load model with error code: " << result << std::endl;
     return;
+} else {
+    std::cout << "Model loaded successfully" << std::endl;
 }
 ```
+
+## Notes | 注意事项
+
+- The model directory must contain valid model files
+- 模型目录必须包含有效的模型文件
+- Make sure to call this function after successful SDK authorization
+- 确保在SDK授权成功后调用此函数
+- The thread number should be optimized based on system resources
+- 线程数量应根据系统资源进行优化
 
 ## Related Documentation | 相关文档
 

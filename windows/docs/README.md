@@ -1,17 +1,16 @@
-# Ronsson AI SDK Documentation
-# Ronsson AI SDK 文档
+# Ronsson AI SDK Document
 
-## Table of Contents | 目录
+# Table of Contents | 目录
 
-- [Overview | 概述](#overview)
-- [System Requirements | 系统要求](#system-requirements)
-- [Notice | 注意事项](#notice)
-- [Usage Flow | 使用流程](#usage-flow)
-- [File Structure | 文件结构](#file-structure)
-- [Core APIs | 核心API](#core-apis)
-- [Getting Started | 开始使用](#getting-started)
-- [Common Tasks | 常见任务](#common-tasks)
-- [Support | 支持](#support)
+- [Overview | 概述](#overview--概述)
+- [System Requirements | 系统要求](#system-requirements--系统要求)
+- [Notice | 注意事项](#notice--注意事项)
+- [Usage Flow | 使用流程](#usage-flow--使用流程)
+- [File Structure | 文件结构](#file-structure--文件结构)
+- [Core APIs | 核心API](#core-apis--核心api)
+- [Getting Started | 开始使用](#getting-started--开始使用)
+- [Common Tasks | 常见任务](#common-tasks--常见任务)
+- [Support | 支持](#support--支持)
 
 ## Overview | 概述
 
@@ -20,16 +19,12 @@ Ronsson AI SDK 提供用于AI生鲜食品图像分类的API接口。
 
 ## System Requirements | 系统要求
 
-- Windows operating system
-- Windows操作系统
-- C++ development environment
-- C++开发环境
-- Minimum 4GB RAM
-- 最小4GB内存
-- 1GB free disk space
-- 1GB可用磁盘空间
-- Supports x64 or x86 CPU architecture
-- 支持x64或x86 CPU架构
+- Windows
+  - Supports x64 or x86 CPU architecture| 支持x64或x86 CPU架构
+- Linux
+  - Support x64 CPU architecture
+  - Tested on Ubuntu series (20.04, 22.04, etc.)
+  - Requires C++11 support
 
 ## Notice | 注意事项
 
@@ -41,15 +36,14 @@ One authorization code can only be used on one terminal, please contact us to ob
 - The following diagram shows the simple workflow of the SDK:
 - 下图展示了SDK的简单工作流程：
 
-    ```mermaid
-    flowchart TD
-        A[Start] --> L[Load Model]
-        L --> P[Predict]
-        P --> R[Register]
-        R --> U[Unload Model]
-        U --> Z[End]
-    ```
-
+  ```mermaid
+  flowchart TD
+      A[Start] --> L[Load Model]
+      L --> P[Predict]
+      P --> R[Register]
+      R --> U[Unload Model]
+      U --> Z[End]
+  ```
 - System Integration Best Practices:
 - 系统集成最佳实践：
 
@@ -90,20 +84,21 @@ sequenceDiagram
    `docs/` - 文档文件
 
 ### Core APIs | 核心API
-- [SDK Authorization | SDK授权](apis/authorization.md) 
-    - Authorize SDK usage with validation codes
-    - 使用验证码授权SDK使用
-- [Model Loading | 模型加载](apis/model_load.md) 
-    - Load AI models into memory
+
+- [SDK Authorization | SDK授权](apis/authorization.md)
+  - Authorize SDK usage with validation codes
+  - 使用验证码授权SDK使用
+- [Model Loading | 模型加载](apis/model_load.md)
+  - Load AI models into memory
   - 将AI模型加载到内存中
-- [Image Prediction | 图像预测](apis/prediction.md) 
-    - Classify images using loaded models
+- [Image Prediction | 图像预测](apis/prediction.md)
+  - Classify images using loaded models
   - 使用加载的模型对图像进行分类
-- [Image Registration | 图像注册](apis/registration.md) 
-    - Add training data to improve model accuracy
+- [Image Registration | 图像注册](apis/registration.md)
+  - Add training data to improve model accuracy
   - 添加训练数据以提高模型准确性
-- [Model Management | 模型管理](apis/model_management.md) 
-    - Save, reset, and manage model data
+- [Model Management | 模型管理](apis/model_management.md)
+  - Save, reset, and manage model data
   - 保存、重置和管理模型数据
 
 ## Getting Started | 开始使用
@@ -118,6 +113,7 @@ sequenceDiagram
 ### Code Integration | 代码集成
 
 1. Initialize the SDK | 初始化SDK:
+
 ```cpp
 SetDllDirectoryW(L"lib");
 
@@ -161,6 +157,7 @@ sign_func = (SmartPredictor_sign)GetProcAddress(dll_handle, "SmartPredictor_sign
 ```
 
 2. Load model | 加载模型:
+
 ```cpp
 // Load the model
 int result = SmartPredictor_load("./model", 4);
@@ -173,6 +170,7 @@ if (result < 0) {
 ```
 
 3. Perform your first prediction | 执行首次预测:
+
 ```cpp
 // Read an image
 std::vector<unsigned char> imageData = readImage("demo.jpg");
@@ -197,6 +195,7 @@ if (result >= 0) {
 ```
 
 4. Registering New Images | 注册新图像
+
 ```cpp
 // Read an image
 std::vector<unsigned char> imageData = readImage("demo.jpg");
@@ -216,6 +215,7 @@ if (result >= 0) {
 ```
 
 5. Clean up | 清理:
+
 ```cpp
 // Release resources
 SmartPredictor_unload();
@@ -224,6 +224,7 @@ SmartPredictor_unload();
 ## Common Tasks | 常见任务
 
 ### Save the model to disk | 保存模型到磁盘
+
 ```cpp
 // Save the model to disk, recommended to call every 5 minutes or after accumulating 30 registered images
 // 保存模型到磁盘，建议每5分钟调用一次或在累积30张注册图像后调用
@@ -231,6 +232,7 @@ SmartPredictor_save("./model");
 ```
 
 ### Delete Labels | 删除标签
+
 ```cpp
 // Delete a label and all images in sdk
 // 删除SDK中的标签和所有相关图像
@@ -240,6 +242,7 @@ if (SmartPredictor_delete("apple")) {
 ```
 
 ### Reset the Model | 重置模型
+
 ```cpp
 // Reset the model (irreversible)
 // 重置模型（不可逆操作）
@@ -251,5 +254,6 @@ if (SmartPredictor_reset("./model")) {
 ## Support | 支持
 
 For technical support or questions | 如需技术支持或有任何问题：
+
 - Email: chenbuqiao@rongxwy.com
-- wechat: chenbuqiao 
+- wechat: chenbuqiao

@@ -72,10 +72,10 @@ sequenceDiagram
 
 ## File Structure | 文件结构
 
-1. `demo.exe` - Contains both the activation tool and example program
-   `demo.exe` - 包含激活工具和示例程序
-2. `lib/` - all library, `smart_predictor_jni.dll` - Core SDK library
-   `lib/` - 所有库文件，`smart_predictor_jni.dll` - 核心SDK库
+1. `demo` - Contains both the activation tool and example program
+   `demo` - 包含激活工具和示例程序
+2. `lib/` - all library, `smart_predictor_jni.so` - Core SDK library
+   `lib/` - 所有库文件，`smart_predictor_jni.so` - 核心SDK库
 3. `model/` - Directory for AI algorithm model files
    `model/` - AI算法模型文件目录
 4. `docs/` - Documentation files
@@ -113,26 +113,23 @@ sequenceDiagram
 1. Initialize the SDK | 初始化SDK:
 
 ```cpp
-SetDllDirectoryW(L"lib");
-
 // Configuration parameters
-const wchar_t* DLL_NAME = L"smart_predictor_jni.dll";
+const char* LIB_NAME = "./lib/libsmart_predictor_jni.so";
 const char* MODEL_DIR = "./model";
 const char* TEST_IMAGE_PATH = "demo.jpg";
 float PREDICTION_THRESHOLD = 0.3f;
 
-// DLL function pointers
-HINSTANCE dll_handle = nullptr;
-using SmartPredictor_load = int(CALLBACK*)(const char*, int);
-using SmartPredictor_unload = int(CALLBACK*)();
-using SmartPredictor_predict_img = int (CALLBACK*)(unsigned char*, long, float, char*, long);
-using SmartPredictor_regist_img = int(CALLBACK*)(unsigned char*, long byte_size, const char* label, int pos);
-using SmartPredictor_save = int(CALLBACK*)(const char*);
-using SmartPredictor_reset = bool(CALLBACK*)(const char*);
-using SmartPredictor_delete = bool(CALLBACK*)(const char*);
-using SmartPredictor_sign = int(CALLBACK*)(const char*, const char*);
-
 // Function pointers
+void* lib_handle = nullptr;
+using SmartPredictor_load = int(*)(const char*, int);
+using SmartPredictor_unload = int(*)();
+using SmartPredictor_predict_img = int(*)(unsigned char*, long, float, char*, long);
+using SmartPredictor_regist_img = int(*)(unsigned char*, long, const char*, int);
+using SmartPredictor_save = int(*)(const char*);
+using SmartPredictor_reset = bool(*)(const char*);
+using SmartPredictor_delete = bool(*)(const char*);
+using SmartPredictor_sign = int(*)(const char*, const char*);
+
 SmartPredictor_load load_func = nullptr;
 SmartPredictor_unload unload_func = nullptr;
 SmartPredictor_predict_img predict_func = nullptr;
@@ -142,26 +139,24 @@ SmartPredictor_reset reset_func = nullptr;
 SmartPredictor_delete delete_func = nullptr;
 SmartPredictor_sign sign_func = nullptr;
 
-dll_handle = LoadLibraryW(DLL_NAME);
+lib_handle = dlopen(LIB_NAME, RTLD_LAZY);
 
-load_func = (SmartPredictor_load)GetProcAddress(dll_handle, "SmartPredictor_load");
-unload_func = (SmartPredictor_unload)GetProcAddress(dll_handle, "SmartPredictor_unload");
-predict_func = (SmartPredictor_predict_img)GetProcAddress(dll_handle, "SmartPredictor_predict_img_filter");
-regist_func = (SmartPredictor_regist_img)GetProcAddress(dll_handle, "SmartPredictor_regist_img");
-save_func = (SmartPredictor_save)GetProcAddress(dll_handle, "SmartPredictor_save");
-reset_func = (SmartPredictor_reset)GetProcAddress(dll_handle, "SmartPredictor_reset");
-delete_func = (SmartPredictor_delete)GetProcAddress(dll_handle, "SmartPredictor_delete");
-sign_func = (SmartPredictor_sign)GetProcAddress(dll_handle, "SmartPredictor_sign");
+load_func = (SmartPredictor_load)dlsym(lib_handle, "SmartPredictor_load");
+unload_func = (SmartPredictor_unload)dlsym(lib_handle, "SmartPredictor_unload");
+predict_func = (SmartPredictor_predict_img)dlsym(lib_handle, "SmartPredictor_predict_img");
+regist_func = (SmartPredictor_regist_img)dlsym(lib_handle, "SmartPredictor_regist_img");
+save_func = (SmartPredictor_save)dlsym(lib_handle, "SmartPredictor_save");
+reset_func = (SmartPredictor_reset)dlsym(lib_handle, "SmartPredictor_reset");
+delete_func = (SmartPredictor_delete)dlsym(lib_handle, "SmartPredictor_delete");
+sign_func = (SmartPredictor_sign)dlsym(lib_handle, "SmartPredictor_sign");
 ```
 
 2. Load model | 加载模型:
 
 ```cpp
 // Load the model
-int result = SmartPredictor_load("./model", 4);
-if (result < 0) {
-    std::cerr << "Failed to load model" << std::endl;
-    return;
+if (load_func(MODEL_DIR, 3) < 0) {
+    std::cout << "Failed to load model" << std::endl;
 } else {
     std::cout << "Model loaded successfully" << std::endl;
 }
@@ -170,53 +165,42 @@ if (result < 0) {
 3. Perform your first prediction | 执行首次预测:
 
 ```cpp
-// Read an image
-std::vector<unsigned char> imageData = readImage("demo.jpg");
-
-// Prepare buffer for results
+std::vector<unsigned char> imageData = readImage(TEST_IMAGE_PATH);
 char buffer[1024];
-
-// Predict
-int result = SmartPredictor_predict_img_filter(
-    imageData.data(),
-    static_cast<long>(imageData.size()),
-    0.3f,
-    buffer,
-    sizeof(buffer)
-);
-
-if (result >= 0) {
-    std::cout << "Prediction results: " << buffer << std::endl;
-} else {
-    std::cerr << "Prediction failed" << std::endl;
-}
+int predictResult = predict_func(imageData.data(),
+                                 static_cast<unsigned int>(imageData.size()), 
+                                 PREDICTION_THRESHOLD,
+                                 buffer,
+                                 sizeof(buffer));
+std::cout << "Prediction result: " << predictResult << std::endl;
+std::cout << "Prediction content: " << buffer << std::endl;             
 ```
 
 4. Registering New Images | 注册新图像
 
 ```cpp
-// Read an image
-std::vector<unsigned char> imageData = readImage("demo.jpg");
-// Register a new image
-int result = SmartPredictor_regist_img(
-    imageData.data(),
-    static_cast<long>(imageData.size()),
-    "apple",
-    6
-);
+std::vector<unsigned char> imageData = readImage(TEST_IMAGE_PATH);
+auto start = std::chrono::high_resolution_clock::now();
 
-if (result >= 0) {
-    std::cout << "Registration successful" << std::endl;
-} else {
-    std::cerr << "Registration failed" << std::endl;
-}
+int registResult = regist_func(imageData.data(), 
+                               static_cast<unsigned int>(imageData.size()), 
+                               label.c_str(), 6);
+
+auto end = std::chrono::high_resolution_clock::now();
+auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+
+std::cout << "Registration time: " << duration.count() << "ms" << std::endl;
+std::cout << "Registration result: " << registResult << std::endl;
 ```
 
 5. Clean up | 清理:
 
 ```cpp
-// Release resources
-SmartPredictor_unload();
+if (unload_func() == 0) {
+    std::cout << "Model unloaded successfully" << std::endl;
+} else {
+    std::cout << "Failed to unload model" << std::endl;
+}
 ```
 
 ## Common Tasks | 常见任务
@@ -226,7 +210,11 @@ SmartPredictor_unload();
 ```cpp
 // Save the model to disk, recommended to call every 5 minutes or after accumulating 30 registered images
 // 保存模型到磁盘，建议每5分钟调用一次或在累积30张注册图像后调用
-SmartPredictor_save("./model");
+if (save_func(MODEL_DIR) != 1) {
+    std::cout << "Failed to save model" << std::endl;
+} else {
+    std::cout << "Model saved successfully" << std::endl;
+}
 ```
 
 ### Delete Labels | 删除标签
@@ -234,8 +222,10 @@ SmartPredictor_save("./model");
 ```cpp
 // Delete a label and all images in sdk
 // 删除SDK中的标签和所有相关图像
-if (SmartPredictor_delete("apple")) {
+if (delete_func(label_to_delete.c_str())) {
     std::cout << "Label deleted successfully" << std::endl;
+} else {
+    std::cout << "Failed to delete label" << std::endl;
 }
 ```
 
@@ -244,8 +234,10 @@ if (SmartPredictor_delete("apple")) {
 ```cpp
 // Reset the model (irreversible)
 // 重置模型（不可逆操作）
-if (SmartPredictor_reset("./model")) {
-    std::cout << "Model reset successfully" << std::endl;
+if (reset_func(MODEL_DIR)) {
+    std::cout << "Model cleared successfully" << std::endl;
+} else {
+    std::cout << "Failed to clear model" << std::endl;
 }
 ```
 

@@ -23,7 +23,7 @@ Ronsson AI SDK 提供用于AI生鲜食品图像分类的API接口。
   - Supports x64 or x86 CPU architecture| 支持x64或x86 CPU架构
 - Linux
   - Support x64 CPU architecture
-  - Tested on Ubuntu series (20.04, 22.04, etc.)，Windows series (10, 11, etc.)
+  - Tested on Ubuntu series (20.04, 22.04, etc.)
   - Requires C++11 support
 
 ## Notice | 注意事项

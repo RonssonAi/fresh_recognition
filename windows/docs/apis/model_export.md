@@ -45,8 +45,8 @@ Export the model data to the specified path.
   - 类型: `int`
   - Description: Type identifier for the model
   - 描述: 模型的类型标识符
-  - Value: `2` (for fresh food classification)
-  - 值: `2`（用于生鲜分类）
+  - Value: `3` (for fresh food classification)
+  - 值: `3`（用于生鲜分类）
 
 ## Returns | 返回值
 
@@ -60,7 +60,7 @@ Export the model data to the specified path.
 ```cpp
 // Export the model
 // 导入模型
-int result = SmartPredictor_export_model("./model", "./export/", 2);
+int result = SmartPredictor_export_model("./model", "./export/", 3);
 if (result < 0) {
     std::cerr << "Failed to export model with error code: " << result << std::endl;
     return;
@@ -71,8 +71,8 @@ if (result < 0) {
 
 ## Notes | 注意事项
 
-- The model source files must be existed
-- 模型源文件必须存在
+- The model files must be existed
+- 模型文件必须存在
 
 ## Related Documentation | 相关文档
 

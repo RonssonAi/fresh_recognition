@@ -127,6 +127,7 @@ SetDllDirectoryW(L"lib");
 const wchar_t* DLL_NAME = L"smart_predictor_jni.dll";
 const char* MODEL_DIR = "./model";
 const char* TEST_IMAGE_PATH = "demo.jpg";
+const char* EXPORT_DIR = "./export";
 float PREDICTION_THRESHOLD = 0.3f;
 
 // DLL function pointers

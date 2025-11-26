@@ -71,8 +71,8 @@ if (result < 0) {
 
 ## Notes | 注意事项
 
-- The model source files must be existed
-- 模型源文件必须存在
+- The model files must be existed
+- 模型文件必须存在
 
 ## Related Documentation | 相关文档
 

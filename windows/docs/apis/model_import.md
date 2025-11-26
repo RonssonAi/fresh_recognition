@@ -37,8 +37,8 @@ Import the model data from the specified path.
   - 类型: `const char*`
   - Description: Path of rrm which need import
   - 描述: 导入rrm文件的路径
-  - Example: `"./export/model_rknn.rrm"`
-  - 示例: `"./export/model_rknn.rrm"`
+  - Example: `"./export/model_ncnn.rrm"`
+  - 示例: `"./export/model_ncnn.rrm"`
 
 ## Returns | 返回值
 
@@ -52,7 +52,7 @@ Import the model data from the specified path.
 ```cpp
 // Import the model
 // 导入模型
-int result = SmartPredictor_import_model("./model", "./export/model_rknn.rrm");
+int result = SmartPredictor_import_model("./model", "./export/model_ncnn.rrm");
 if (result < 0) {
     std::cerr << "Failed to import model with error code: " << result << std::endl;
     return;

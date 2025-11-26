@@ -271,7 +271,7 @@ if (export_func(MODEL_DIR, EXPORT_DIR, 2)) {
 ```
 // Import the model
 // 导入模型
-if (import_func(MODEL_DIR, EXPORT_DIR)) {
+if (import_func(MODEL_DIR, "./export/model_rknn.rrm")) {
     std::cout << "Model import successfully" << std::endl;
 } else {
     std::cout << "Failed to import model" << std::endl;

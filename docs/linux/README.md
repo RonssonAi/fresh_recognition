@@ -21,7 +21,7 @@ Ronsson AI SDK 提供用于AI生鲜食品图像分类的API接口。
 
 - Linux
   - Support x64 CPU architecture
-  - Tested on Debian series (11.11.0, 12.11.0, etc.)，ubuntu22.04
+  - Tested on Debian series (11.11.0, 12.11.0, etc.)
   - Requires C++11 support
 
 ## Notice | 注意事项
@@ -83,25 +83,25 @@ sequenceDiagram
 
 ### Core APIs | 核心API
 
-- [SDK Authorization | SDK授权](apis/authorization.md)
+- [SDK Authorization | SDK授权](../apis/authorization.md)
   - Authorize SDK usage with validation codes
   - 使用验证码授权SDK使用
-- [Model Loading | 模型加载](apis/model_load.md)
+- [Model Loading | 模型加载](../apis/model_load.md)
   - Load AI models into memory
   - 将AI模型加载到内存中
-- [Image Prediction | 图像预测](apis/prediction.md)
+- [Image Prediction | 图像预测](../apis/prediction.md)
   - Classify images using loaded models
   - 使用加载的模型对图像进行分类
-- [Image Registration | 图像注册](apis/registration.md)
+- [Image Registration | 图像注册](../apis/registration.md)
   - Add training data to improve model accuracy
   - 添加训练数据以提高模型准确性
-- [Model Management | 模型管理](apis/model_management.md)
+- [Model Management | 模型管理](../apis/model_management.md)
   - Save, reset, and manage model data
   - 保存、重置和管理模型数据
-- [Model Export | 导出模型](apis/model_export.md)
+- [Model Export | 导出模型](../apis/model_export.md)
   - Export model
   - 导出模型
-- [Model Import | 导入模型](apis/model_import.md)
+- [Model Import | 导入模型](../apis/model_import.md)
   - Import model
   - 导入模型
 

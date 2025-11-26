@@ -64,33 +64,26 @@ JSON string containing prediction results:
 包含预测结果的JSON字符串：
 
 ```json
-{"code": 0,
- "data": {
-  {"scores": 
-   [ 
-     {"id":"apple", "path":"", "score":0.3}, 
-     {"id":"orange", "path":"", "score":0.2}, 
-     {"id":"banana", "path":"", "score":0.2}, 
-     {"id":"onion", "path":"", "score":0.2}, 
-     {"id":"tomato", "path":"", "score":0.1}, 
-   ], 
-  } 
- }
- "msg": "Prediction successful",
- "success": true,
-}
+{"scores": 
+  [ 
+    ["apple", "0.3"], 
+    ["orange", "0.2"], 
+    ["banana", "0.2"], 
+    ["onion", "0.2"], 
+    ["tomato", "0.1"] 
+  ], 
+"predicted_label":" apple" 
+} 
 
 
 **Format explanation:**
 **格式说明:**
 
-- `code`: The status code 0:success | 状态码 0:成功
 - `scores`: Array of prediction results | 预测结果数组
-  - id: label of item | 物品标签
-  - path: storage path of goods picture（local or network） | 物品图片的存储路径（本地或者网络）
-  - score: confidence score of item | 物品的置信度分数
-- `msg`: The prediction message | 预测提示信息
-- `success`: The prediction result | 预测结果
+  - First element: label of item | 第一个元素: 物品标签
+  - Second element: confidence score of item | 第二个元素: 物品的置信度分数
+- `predicted_label`: The label with highest confidence | 置信度最高的标签
+
 ```
 
 ## Example | 示例
@@ -120,7 +113,8 @@ if (result >= 0) {
 
 ## Related Documentation | 相关文档
 
-- [Main Documentation | 主文档](../README.md) - Back to main documentation | 返回主文档
+- [Linux Main Documentation | Linux主文档](../linux/README.md) - Back to main documentation | 返回Linux主文档
+- [Windows Main Documentation | windows主文档](../windows/README.md) - Back to main documentation | 返回Windows主文档
 - [SDK Authorization | SDK授权](authorization.md) - Required before using prediction | 使用预测功能前必需
 - [Model Loading | 模型加载](model_load.md) - Load models before prediction | 预测前加载模型
 - [Image Registration | 图像注册](registration.md) - Improve model accuracy with training data | 使用训练数据提高模型准确性

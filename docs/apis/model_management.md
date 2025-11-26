@@ -155,7 +155,8 @@ if (SmartPredictor_unload() != 0) {
 
 ## Related Documentation | 相关文档
 
-- [Main Documentation | 主文档](../README.md) - Back to main documentation | 返回主文档
+- [Linux Main Documentation | Linux主文档](../linux/README.md) - Back to main documentation | 返回Linux主文档
+- [Windows Main Documentation | windows主文档](../windows/README.md) - Back to main documentation | 返回Windows主文档
 - [SDK Authorization | SDK授权](authorization.md) - Required before using model management | 使用模型管理功能前必需
 - [Model Loading | 模型加载](model_load.md) - Load models before management operations | 管理操作前加载模型
 - [Image Registration | 图像注册](registration.md) - Register data before saving models | 保存模型前注册数据

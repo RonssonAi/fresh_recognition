@@ -37,8 +37,8 @@ Import the model data from the specified path.
   - 类型: `const char*`
   - Description: Path of rrm which need import
   - 描述: 导入rrm文件的路径
-  - Example: `"./export/model_rknn.rrm"`
-  - 示例: `"./export/model_rknn.rrm"`
+  - Example: `"./export/model_ncnn.rrm"`
+  - 示例: `"./export/model_ncnn.rrm"`
 
 ## Returns | 返回值
 
@@ -52,7 +52,7 @@ Import the model data from the specified path.
 ```cpp
 // Import the model
 // 导入模型
-int result = SmartPredictor_import_model("./model", "./export/model_rknn.rrm");
+int result = SmartPredictor_import_model("./model", "./export/model_ncnn.rrm");
 if (result < 0) {
     std::cerr << "Failed to import model with error code: " << result << std::endl;
     return;
@@ -68,7 +68,8 @@ if (result < 0) {
 
 ## Related Documentation | 相关文档
 
-- [Main Documentation | 主文档](../README.md) - Back to main documentation | 返回主文档
+- [Linux Main Documentation | Linux主文档](../linux/README.md) - Back to main documentation | 返回Linux主文档
+- [Windows Main Documentation | windows主文档](../windows/README.md) - Back to main documentation | 返回Windows主文档
 - [SDK Authorization | SDK授权](authorization.md) - Required before loading models | 加载模型前必需
 - [Image Prediction | 图像预测](prediction.md) - Use loaded models for classification | 使用加载的模型进行分类
 - [Image Registration | 图像注册](registration.md) - Add training data to loaded models | 向加载的模型添加训练数据

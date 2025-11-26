@@ -45,8 +45,8 @@ Export the model data to the specified path.
   - 类型: `int`
   - Description: Type identifier for the model
   - 描述: 模型的类型标识符
-  - Value: `2` (for fresh food classification)
-  - 值: `2`（用于生鲜分类）
+  - Value: `3` (for fresh food classification)
+  - 值: `3`（用于生鲜分类）
 
 ## Returns | 返回值
 
@@ -60,7 +60,7 @@ Export the model data to the specified path.
 ```cpp
 // Export the model
 // 导入模型
-int result = SmartPredictor_export_model("./model", "./export/", 2);
+int result = SmartPredictor_export_model("./model", "./export/", 3);
 if (result < 0) {
     std::cerr << "Failed to export model with error code: " << result << std::endl;
     return;
@@ -76,7 +76,8 @@ if (result < 0) {
 
 ## Related Documentation | 相关文档
 
-- [Main Documentation | 主文档](../README.md) - Back to main documentation | 返回主文档
+- [Linux Main Documentation | Linux主文档](../linux/README.md) - Back to main documentation | 返回Linux主文档
+- [Windows Main Documentation | windows主文档](../windows/README.md) - Back to main documentation | 返回Windows主文档
 - [SDK Authorization | SDK授权](authorization.md) - Required before loading models | 加载模型前必需
 - [Image Prediction | 图像预测](prediction.md) - Use loaded models for classification | 使用加载的模型进行分类
 - [Image Registration | 图像注册](registration.md) - Add training data to loaded models | 向加载的模型添加训练数据

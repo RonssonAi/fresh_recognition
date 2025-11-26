@@ -1,8 +1,8 @@
 For detailed documentation, please see:
 
-👉 [Windows SDK Documentation](./windows/docs/README.md)
+👉 [Windows SDK Documentation](./docs/windows/README.md)
 
 👉 Android SDK Documentation *(Coming Soon)*
 
-👉 [Linux SDK Documentation](./linux/docs/README.md)
- 
+👉 [Linux SDK Documentation](./docs/windows/README.md)
+

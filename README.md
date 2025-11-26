@@ -4,5 +4,5 @@ For detailed documentation, please see:
 
 👉 Android SDK Documentation *(Coming Soon)*
 
-👉 [Linux SDK Documentation](./docs/windows/README.md)
+👉 [Linux SDK Documentation](./docs/linux/README.md)
 

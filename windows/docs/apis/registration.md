@@ -75,3 +75,5 @@ if (result < 0) {
 - [Model Loading | 模型加载](model_load.md) - Load models before registration | 注册前加载模型
 - [Image Prediction | 图像预测](prediction.md) - Use prediction results to guide registration | 使用预测结果指导注册
 - [Model Management | 模型管理](model_management.md) - Save registered data and manage models | 保存注册数据和管理模型
+- [Model Exporting | 模型导出](model_export.md)- Model export | 模型导出
+- [Model Importing | 模型导入](model_import.md) - Model import | 模型导入

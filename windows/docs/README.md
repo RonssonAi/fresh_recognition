@@ -100,6 +100,12 @@ sequenceDiagram
 - [Model Management | 模型管理](apis/model_management.md)
   - Save, reset, and manage model data
   - 保存、重置和管理模型数据
+- [Model Export | 导出模型](apis/model_export.md)
+  - Export model 
+  - 导出模型
+- [Model Import | 导入模型](apis/model_import.md)
+  - Import model 
+  - 导入模型
 
 ## Getting Started | 开始使用
 
@@ -133,6 +139,8 @@ using SmartPredictor_save = int(CALLBACK*)(const char*);
 using SmartPredictor_reset = bool(CALLBACK*)(const char*);
 using SmartPredictor_delete = bool(CALLBACK*)(const char*);
 using SmartPredictor_sign = int(CALLBACK*)(const char*, const char*);
+using SmartPredictor_export_model = int(CALLBACK*)(const char*, const char*, int);
+using SmartPredictor_import_model = int(CALLBACK*)(const char*, const char*);
 
 // Function pointers
 SmartPredictor_load load_func = nullptr;
@@ -143,6 +151,8 @@ SmartPredictor_save save_func = nullptr;
 SmartPredictor_reset reset_func = nullptr;
 SmartPredictor_delete delete_func = nullptr;
 SmartPredictor_sign sign_func = nullptr;
+SmartPredictor_export_model export_func = nullptr;
+SmartPredictor_import_model import_func = nullptr;
 
 dll_handle = LoadLibraryW(DLL_NAME);
 
@@ -154,6 +164,8 @@ save_func = (SmartPredictor_save)GetProcAddress(dll_handle, "SmartPredictor_save
 reset_func = (SmartPredictor_reset)GetProcAddress(dll_handle, "SmartPredictor_reset");
 delete_func = (SmartPredictor_delete)GetProcAddress(dll_handle, "SmartPredictor_delete");
 sign_func = (SmartPredictor_sign)GetProcAddress(dll_handle, "SmartPredictor_sign");
+export_func = (SmartPredictor_export_model)GetProcAddress(dll_handle, "SmartPredictor_export_model");
+import_func = (SmartPredictor_import_model)GetProcAddress(dll_handle, "SmartPredictor_import_model");
 ```
 
 2. Load model | 加载模型:
@@ -248,6 +260,26 @@ if (SmartPredictor_delete("apple")) {
 // 重置模型（不可逆操作）
 if (SmartPredictor_reset("./model")) {
     std::cout << "Model reset successfully" << std::endl;
+}
+```
+
+### Export the Model | 导出模型
+
+```
+// Export the model
+// 导出模型
+if (SmartPredictor_export_model("./model", "./export", 2)) {
+    std::cout << "Model export successfully" << std::endl;
+}
+```
+
+### Import the Model | 导入模型
+
+```
+// Import the model
+// 导入模型
+if (SmartPredictor_import_model("./model", "./export/model_ncnn.rrm", 3)) {
+    std::cout << "Model import successfully" << std::endl;
 }
 ```
 

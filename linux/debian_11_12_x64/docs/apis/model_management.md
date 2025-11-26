@@ -160,3 +160,5 @@ if (SmartPredictor_unload() != 0) {
 - [Model Loading | 模型加载](model_load.md) - Load models before management operations | 管理操作前加载模型
 - [Image Registration | 图像注册](registration.md) - Register data before saving models | 保存模型前注册数据
 - [Image Prediction | 图像预测](prediction.md) - Use models for classification | 使用模型进行分类
+- [Model Exporting | 模型导出](model_export.md)- Model export | 模型导出
+- [Model Importing | 模型导入](model_import.md) - Model import | 模型导入

@@ -141,3 +141,5 @@ For authorization code requests or technical support, contact: chenbuqiao@qq.com
 - [Image Prediction API | 图像预测API](prediction.md) - Perform image classification | 执行图像分类
 - [Image Registration API | 图像注册API](registration.md) - Register training data | 注册训练数据
 - [Model Management API | 模型管理API](model_management.md) - Manage model lifecycle | 管理模型生命周期 
+- [Model Exporting API | 模型导出API](model_export.md)- Model export | 模型导出
+- [Model Importing API | 模型导入API](model_import.md) - Model import | 模型导入

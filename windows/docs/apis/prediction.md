@@ -118,3 +118,5 @@ if (result >= 0) {
 - [Model Loading | 模型加载](model_load.md) - Load models before prediction | 预测前加载模型
 - [Image Registration | 图像注册](registration.md) - Improve model accuracy with training data | 使用训练数据提高模型准确性
 - [Model Management | 模型管理](model_management.md) - Manage model lifecycle | 管理模型生命周期
+- [Model Exporting | 模型导出](model_export.md)- Model export | 模型导出
+- [Model Importing | 模型导入](model_import.md) - Model import | 模型导入

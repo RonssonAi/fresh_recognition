@@ -79,3 +79,5 @@ if (result < 0) {
 - [Image Prediction | 图像预测](prediction.md) - Use loaded models for classification | 使用加载的模型进行分类
 - [Image Registration | 图像注册](registration.md) - Add training data to loaded models | 向加载的模型添加训练数据
 - [Model Management | 模型管理](model_management.md) - Save and manage loaded models | 保存和管理加载的模型
+- [Model Exporting | 模型导出](model_export.md)- Model export | 模型导出
+- [Model Importing | 模型导入](model_import.md) - Model import | 模型导入

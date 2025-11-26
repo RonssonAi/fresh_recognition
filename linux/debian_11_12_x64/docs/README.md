@@ -98,6 +98,12 @@ sequenceDiagram
 - [Model Management | 模型管理](apis/model_management.md)
   - Save, reset, and manage model data
   - 保存、重置和管理模型数据
+- [Model Export | 导出模型](apis/model_export.md)
+  - Export model
+  - 导出模型
+- [Model Import | 导入模型](apis/model_import.md)
+  - Import model
+  - 导入模型
 
 ## Getting Started | 开始使用
 
@@ -117,6 +123,7 @@ sequenceDiagram
 const char* LIB_NAME = "./lib/libsmart_predictor_jni.so";
 const char* MODEL_DIR = "./model";
 const char* TEST_IMAGE_PATH = "demo.jpg";
+const char* EXPORT_DIR = "./export";
 float PREDICTION_THRESHOLD = 0.3f;
 
 // Function pointers
@@ -129,6 +136,8 @@ using SmartPredictor_save = int(*)(const char*);
 using SmartPredictor_reset = bool(*)(const char*);
 using SmartPredictor_delete = bool(*)(const char*);
 using SmartPredictor_sign = int(*)(const char*, const char*);
+using SmartPredictor_export_model = int(*)(const char*, const char*, int);
+using SmartPredictor_import_model = int(*)(const char*, const char*);
 
 SmartPredictor_load load_func = nullptr;
 SmartPredictor_unload unload_func = nullptr;
@@ -138,6 +147,8 @@ SmartPredictor_save save_func = nullptr;
 SmartPredictor_reset reset_func = nullptr;
 SmartPredictor_delete delete_func = nullptr;
 SmartPredictor_sign sign_func = nullptr;
+SmartPredictor_export_model export_func = nullptr;
+SmartPredictor_import_model import_func = nullptr;
 
 lib_handle = dlopen(LIB_NAME, RTLD_LAZY);
 
@@ -149,13 +160,15 @@ save_func = (SmartPredictor_save)dlsym(lib_handle, "SmartPredictor_save");
 reset_func = (SmartPredictor_reset)dlsym(lib_handle, "SmartPredictor_reset");
 delete_func = (SmartPredictor_delete)dlsym(lib_handle, "SmartPredictor_delete");
 sign_func = (SmartPredictor_sign)dlsym(lib_handle, "SmartPredictor_sign");
+export_func = (SmartPredictor_export_model)dlsym(lib_handle, "SmartPredictor_export_model");
+import_func = (SmartPredictor_import_model)dlsym(lib_handle, "SmartPredictor_import_model");
 ```
 
 2. Load model | 加载模型:
 
 ```cpp
 // Load the model
-if (load_func(MODEL_DIR, 3) < 0) {
+if (load_func(MODEL_DIR, 2) < 0) {
     std::cout << "Failed to load model" << std::endl;
 } else {
     std::cout << "Model loaded successfully" << std::endl;
@@ -240,6 +253,32 @@ if (reset_func(MODEL_DIR)) {
     std::cout << "Failed to clear model" << std::endl;
 }
 ```
+
+### Export the Model | 导出模型
+
+```
+// Export the model
+// 导出模型
+if (export_func(MODEL_DIR, EXPORT_DIR, 2)) {
+    std::cout << "Model export successfully" << std::endl;
+} else {
+    std::cout << "Failed to export model" << std::endl;
+}
+```
+
+### Import the Model | 导入模型
+
+```
+// Import the model
+// 导入模型
+if (import_func(MODEL_DIR, EXPORT_DIR)) {
+    std::cout << "Model import successfully" << std::endl;
+} else {
+    std::cout << "Failed to import model" << std::endl;
+}
+```
+
+
 
 ## Support | 支持
 

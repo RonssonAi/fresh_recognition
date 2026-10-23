@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>联系留言</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+        body {
+            background-color: #f4f7fa;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 520px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 32px;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+        h2 {
+            text-align: center;
+            color: #222;
+            margin-bottom: 24px;
+        }
+        .form-item {
+            margin-bottom: 18px;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            color: #444;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        textarea {
+            min-height: 140px;
+            resize: vertical;
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            background-color: #2563eb;
+            color: white;
+            font-size: 17px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        button:hover {
+            background-color: #1d4ed8;
+        }
+        button:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+        .tip {
+            margin-top:16px;
+            text-align:center;
+            color:#666;
+            font-size:14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 data-i18n="title">联系留言</h2>
+        <form id="msgForm" action="https://formsubmit.co/chenbuqiao@qq.com" method="POST">
+            <!-- 蜜罐防垃圾 -->
+            <input type="text" name="_honey" style="display:none">
+            <input type="hidden" name="_autoresponse" value="">
+            <input type="hidden" name="_subject" value="网站新留言">
+
+            <div class="form-item">
+                <label data-i18n="nameLabel">姓名</label>
+                <input type="text" name="name" required>
+            </div>
+            <div class="form-item">
+                <label data-i18n="emailLabel">你的邮箱（方便回复）</label>
+                <input type="email" name="email" required>
+            </div>
+            <div class="form-item">
+                <label data-i18n="msgLabel">留言内容</label>
+                <textarea name="message" required></textarea>
+            </div>
+            <button type="submit" id="submitBtn" data-i18n="submitBtn">提交留言</button>
+        </form>
+        <div class="tip" data-i18n="desc">提交后信息将发送到邮箱</div>
+    </div>
+
+<script>
+// 多语言字典
+const i18n = {
+    zh: {
+        title: "联系留言",
+        nameLabel: "姓名",
+        emailLabel: "你的邮箱（方便回复）",
+        msgLabel: "留言内容",
+        submitBtn: "提交留言",
+        desc: "提交后信息将发送到邮箱",
+        success: "✅ 提交成功！我会尽快回复。",
+        error: "❌ 提交失败，请稍后重试！"
+    },
+    en: {
+        title: "Contact Form",
+        nameLabel: "Name",
+        emailLabel: "Your email for reply",
+        msgLabel: "Message",
+        submitBtn: "Send Message",
+        desc: "Your message will be sent to mailbox",
+        success: "✅ Sent successfully! I will reply soon.",
+        error: "❌ Failed, please try again later."
+    }
+};
+
+// 自动检测浏览器语言
+let lang = navigator.language || navigator.userLanguage;
+lang = lang.startsWith('zh') ? 'zh' : 'en';
+const text = i18n[lang];
+
+// 渲染页面文字
+document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key = el.getAttribute('data-i18n');
+    el.innerText = text[key];
+})
+
+// 表单提交拦截，不跳转
+const form = document.getElementById('msgForm');
+const btn = document.getElementById('submitBtn');
+form.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    btn.disabled = true;
+    btn.innerText = lang==='zh' ? '提交中...' : 'Sending...';
+    try {
+        const fd = new FormData(form);
+        const res = await fetch(form.action, {method:'POST', body:fd, redirect:'manual'});
+        alert(text.success);
+        form.reset();
+    }catch(err){
+        alert(text.error);
+    }
+    btn.disabled = false;
+    btn.innerText = text.submitBtn;
+})
+</script>
+</body>
+</html>

@@ -1,157 +1,126 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>联系留言</title>
+    <title>Submit Requirements</title>
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: system-ui, -apple-system, sans-serif;
+            font-family: Arial, sans-serif;
         }
         body {
-            background-color: #f4f7fa;
             padding: 40px 20px;
-        }
-        .container {
-            max-width: 520px;
+            max-width: 900px;
             margin: 0 auto;
-            background: #fff;
-            padding: 32px;
-            border-radius: 12px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
         }
-        h2 {
+        h1 {
+            color: #c8102e;
             text-align: center;
-            color: #222;
-            margin-bottom: 24px;
+            font-size: 34px;
+            margin-bottom: 36px;
+            font-weight: bold;
         }
-        .form-item {
-            margin-bottom: 18px;
+        .form-row {
+            margin-bottom: 22px;
         }
         label {
             display: block;
-            margin-bottom: 6px;
-            color: #444;
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: #222;
+        }
+        .required::after {
+            content: " *";
+            color: #c8102e;
         }
         input, textarea {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
+            padding: 12px 14px;
+            border: 1px solid #ccc;
+            font-size: 15px;
+            border-radius: 2px;
         }
         textarea {
-            min-height: 140px;
+            min-height: 130px;
             resize: vertical;
         }
         button {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            background-color: #2563eb;
+            display: block;
+            margin: 30px auto 0;
+            padding: 12px 48px;
+            background-color: #c8102e;
             color: white;
-            font-size: 17px;
-            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+            border-radius: 2px;
             cursor: pointer;
-            transition: 0.2s;
-        }
-        button:hover {
-            background-color: #1d4ed8;
         }
         button:disabled {
-            background: #94a3b8;
+            background-color: #991024;
             cursor: not-allowed;
-        }
-        .tip {
-            margin-top:16px;
-            text-align:center;
-            color:#666;
-            font-size:14px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2 data-i18n="title">联系留言</h2>
-        <form id="msgForm" action="https://formsubmit.co/chenbuqiao@qq.com" method="POST">
-            <!-- 蜜罐防垃圾 -->
-            <input type="text" name="_honey" style="display:none">
-            <input type="hidden" name="_autoresponse" value="">
-            <input type="hidden" name="_subject" value="网站新留言">
+    <h1>Please submit your requirements</h1>
+    <form id="reqForm" action="https://formsubmit.co/mk@ronsson.net" method="POST">
+        <!-- 防垃圾蜜罐 -->
+        <input type="text" name="_honey" style="display:none">
+        <input type="hidden" name="_autoresponse" value="">
+        <input type="hidden" name="_subject" value="客户需求表单提交">
 
-            <div class="form-item">
-                <label data-i18n="nameLabel">姓名</label>
-                <input type="text" name="name" required>
-            </div>
-            <div class="form-item">
-                <label data-i18n="emailLabel">你的邮箱（方便回复）</label>
-                <input type="email" name="email" required>
-            </div>
-            <div class="form-item">
-                <label data-i18n="msgLabel">留言内容</label>
-                <textarea name="message" required></textarea>
-            </div>
-            <button type="submit" id="submitBtn" data-i18n="submitBtn">提交留言</button>
-        </form>
-        <div class="tip" data-i18n="desc">提交后信息将发送到邮箱</div>
-    </div>
+        <div class="form-row">
+            <label>Your needs</label>
+            <textarea name="needs" placeholder="Dear customer, you can leave your messages here so that we can better understand your needs" required></textarea>
+        </div>
+        <div class="form-row">
+            <label class="required">Name</label>
+            <input type="text" name="name" placeholder="Please input your name" required>
+        </div>
+        <div class="form-row">
+            <label class="required">Email</label>
+            <input type="email" name="email" placeholder="Please input your email" required>
+        </div>
+        <div class="form-row">
+            <label class="required">Company Name</label>
+            <input type="text" name="company" placeholder="Please input your company name" required>
+        </div>
+        <div class="form-row">
+            <label class="required">Mobile</label>
+            <input type="text" name="mobile" placeholder="Please input your mobile" required>
+        </div>
+        <div class="form-row">
+            <label class="required">Country/Region</label>
+            <input type="text" name="country" placeholder="Please input your Country/Region" required>
+        </div>
+
+        <button type="submit" id="submitBtn">Submit</button>
+    </form>
 
 <script>
-// 多语言字典
-const i18n = {
-    zh: {
-        title: "联系留言",
-        nameLabel: "姓名",
-        emailLabel: "你的邮箱（方便回复）",
-        msgLabel: "留言内容",
-        submitBtn: "提交留言",
-        desc: "提交后信息将发送到邮箱",
-        success: "✅ 提交成功！我会尽快回复。",
-        error: "❌ 提交失败，请稍后重试！"
-    },
-    en: {
-        title: "Contact Form",
-        nameLabel: "Name",
-        emailLabel: "Your email for reply",
-        msgLabel: "Message",
-        submitBtn: "Send Message",
-        desc: "Your message will be sent to mailbox",
-        success: "✅ Sent successfully! I will reply soon.",
-        error: "❌ Failed, please try again later."
-    }
-};
-
-// 自动检测浏览器语言
-let lang = navigator.language || navigator.userLanguage;
-lang = lang.startsWith('zh') ? 'zh' : 'en';
-const text = i18n[lang];
-
-// 渲染页面文字
-document.querySelectorAll('[data-i18n]').forEach(el=>{
-    const key = el.getAttribute('data-i18n');
-    el.innerText = text[key];
-})
-
-// 表单提交拦截，不跳转
-const form = document.getElementById('msgForm');
+const form = document.getElementById('reqForm');
 const btn = document.getElementById('submitBtn');
-form.addEventListener('submit', async (e)=>{
+form.addEventListener('submit', async (e) => {
     e.preventDefault();
     btn.disabled = true;
-    btn.innerText = lang==='zh' ? '提交中...' : 'Sending...';
+    btn.textContent = 'Submitting...';
     try {
         const fd = new FormData(form);
-        const res = await fetch(form.action, {method:'POST', body:fd, redirect:'manual'});
-        alert(text.success);
+        await fetch(form.action, {
+            method: 'POST',
+            body: fd,
+            redirect: 'manual'
+        });
+        alert('✅ Submit successfully!');
         form.reset();
-    }catch(err){
-        alert(text.error);
+    } catch (err) {
+        alert('❌ Submit failed, please try again later.');
     }
     btn.disabled = false;
-    btn.innerText = text.submitBtn;
+    btn.textContent = 'Submit';
 })
 </script>
 </body>
